@@ -5,7 +5,7 @@ This project is a web application that utilizes OpenAI's API model to generate t
 Features :
 
 Emoji Generator: Converts regular text into emoji-rich expressions.
-Speak Like a Millennia: Makes text more dynamic and youthful.
+Speak Like a Millennial: Makes text more dynamic and youthful.
 Translate Slangs: Translates slang expressions into standard language.
 
 Usage :
