@@ -1,0 +1,227 @@
+    <!DOCTYPE html>
+    <html> 
+        <head>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <title>res Generator</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                vertical-align: baseline;
+		        font-family: "Monaco", Monospace;
+                color: white;
+            }
+            .main_container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-evenly;
+                align-items: center;
+                width: 100%;
+            }
+            .container {
+                text-align: center;
+    		display: flex;
+            flex-direction: column;
+    		align-items: center;
+    		justify-content: center;
+            gap: 10%;
+    		height: 50vh;
+    		flex-wrap: wrap;
+            padding: 1% 5%;
+            margin: 10px;
+            border-radius: 50px;
+            box-shadow: 5px 5px 5px rgb(155, 151, 48);
+                &.container_1 {
+                    background: #f1710f;
+                    button {
+                        animation: jittery 4s infinite;
+                    }
+                }
+                &.container_2 {
+                    background: #f1c40f;
+                    button {
+                        p {
+                            margin: 0;
+		animation: typing 4s steps(12) infinite;
+		display: inline-block;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+                    }
+                }
+                &.container_3 {
+                    background: #6fec16;
+                    button {
+                        animation: jittery 4s infinite;
+                    }
+                }
+        }
+
+            h1 {
+                font-size: 34px;
+                margin-bottom: 20px;
+            }
+            label {
+                
+            }
+            input[type="text"] {
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                font-size: 18px;
+                padding: 10px;
+                width: 70%;
+            }
+
+            button {
+                margin-top: 20px;
+
+    background: transparent;
+    color: #fff;
+    border: 3px solid #fff;
+    border-radius: 50px;
+    padding: 0.8rem 2rem;
+    font: 24px "Margarine", sans-serif;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s ease-in-out;
+    letter-spacing: 2px;
+            }
+
+            button:hover {
+                background-color: #00000028;
+            }
+
+            .res {
+                margin-top: 30px;
+                font-size: 18px;
+            }
+
+            .options {
+                margin-top: 20px;
+            }
+
+            @keyframes typing {
+	0% {
+		width: 0;
+	}
+	50% {
+		width: 100%;
+	}
+	55%,
+	65%,
+	75% {
+		opacity: 1;
+	}
+	60%,
+	70% {
+		opacity: 0;
+	}
+	80% {
+		width: 100%;
+	}
+	100% {
+		width: 0;
+	}
+}
+@keyframes jittery {
+	5%,
+	50% {
+		transform: scale(1);
+	}
+	10% {
+		transform: scale(0.9);
+	}
+	15% {
+		transform: scale(1.15);
+	}
+	20% {
+		transform: scale(1.15) rotate(-5deg);
+	}
+	25% {
+		transform: scale(1.15) rotate(5deg);
+	}
+	30% {
+		transform: scale(1.15) rotate(-3deg);
+	}
+	35% {
+		transform: scale(1.15) rotate(2deg);
+	}
+	40% {
+		transform: scale(1.15) rotate(0);
+	}
+}
+        </style>
+    </head>
+
+    <body>
+        <div class="main_container">
+        <div class="container container_1">
+            <h1>Sprinkle Some Emojis! 🌟</h1>
+            <form>
+                <label for="Text0">Your text here :</label>
+                <input type="text" id="Text0" name="Text">
+                <button type="button" onclick="generate('User: add emojis to this message',0)">Generate Text</button>
+            </form>
+            <div class="res" id="res0"></div>
+        </div>
+        <div class="container container_2">
+            <h1>Speak Like a Millennial! 😎💬</h1>
+            <form>
+                <label for="Text1">Your Text here :</label>
+                <input type="text" id="Text1" name="Text">
+                <button type="button" onclick="generate('User: Make this message more dynamic like a young person :',1)"><p>Generate Text</p></button>
+            </form>
+            <div class="res" id="res1"></div>
+        </div>
+        <div class="container container_3">
+            <h1>Unravel the Mystery of Slang! 🔍🗣️</h1>
+            <form>
+                <label for="Text2">Your Text here :</label>
+                <input type="text" id="Text2" name="Text">
+                <button type="button" onclick="generate('User: transalte the slang :',2)">Generate Text</button>
+            </form>
+            <div class="res" id="res2"></div>
+        </div>
+    </div>
+        <script>
+            const apiKey = 'sk-proj-PfgibBd9TEbEUed1glVwT3BlbkFJ7WZfRU8GHR1NqiTfxpSM';
+
+            async function chatWithGPT(prompt, maxTokens = 100) {
+                try {
+                    const response = await axios.post(
+                        'https://api.openai.com/v1/chat/completions',
+                        {
+                            model: 'gpt-4',
+                            messages: [
+                                { role: 'user', content: prompt }
+                            ],
+                            max_tokens: maxTokens
+                        },
+                        {
+                            headers: {
+                                'Authorization': `Bearer ${apiKey}`,
+                                'Content-Type': 'application/json'
+                            }
+                        }
+                    );
+                    return response.data.choices[0].message.content;
+                } catch (error) {
+                    console.error('Error:', error);
+                    return 'An error occurred';
+                }
+            }
+
+            function generate(prompt,i) {
+                const Text = document.getElementById('Text'+i).value;
+
+                chatWithGPT(prompt + Text).then((res) => {
+                    document.getElementById('res'+i).innerHTML = res;
+                });
+            }
+        </script>
+    </body>
+
+    </html>
